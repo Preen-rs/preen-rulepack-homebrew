@@ -14,6 +14,39 @@ jobs:
         with:
           fetch-depth: 0
       - uses: sigstore/cosign-installer@v3
+      - name: Set signing identity for sign-manifest workflow
+        run: |
+          python3 - <<'PY'
+          import os
+          import pathlib
+          import tomllib
+
+          manifest_path = pathlib.Path("manifest.toml")
+          data = tomllib.loads(manifest_path.read_text(encoding="utf-8"))
+          signing = data.get("signing")
+          if not isinstance(signing, dict):
+              raise SystemExit("manifest missing [signing] table")
+          repo = os.environ["GITHUB_REPOSITORY"]
+          signing["identity"] = (
+              f"https://github.com/{repo}"
+              "/.github/workflows/sign-manifest.yml@refs/heads/main"
+          )
+          lines = manifest_path.read_text(encoding="utf-8").splitlines()
+          out = []
+          in_signing = False
+          for line in lines:
+              if line.strip() == "[signing]":
+                  in_signing = True
+                  out.append(line)
+                  continue
+              if in_signing and line.startswith("[") and line.strip() != "[signing]":
+                  in_signing = False
+              if in_signing and line.strip().startswith("identity = "):
+                  out.append(f'identity = "{signing["identity"]}"')
+                  continue
+              out.append(line)
+          manifest_path.write_text("\n".join(out) + "\n", encoding="utf-8")
+          PY
       - name: Generate manifest.sig (keyless)
         env:
           COSIGN_EXPERIMENTAL: "1"
@@ -25,12 +58,12 @@ jobs:
             manifest.toml
       - name: Commit updated manifest artifacts
         run: |
-          if git diff --quiet -- manifest.sig manifest.cert; then
+          if git diff --quiet -- manifest.toml manifest.sig manifest.cert; then
             echo "manifest artifacts unchanged"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add manifest.sig manifest.cert
+          git add manifest.toml manifest.sig manifest.cert
           git commit -m "chore: refresh manifest signature artifacts"
           git push
