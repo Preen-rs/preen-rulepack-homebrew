@@ -17,6 +17,24 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - name: Ensure tag matches manifest version
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          MANIFEST_VERSION="$(python3 - <<'PY'
+import tomllib
+from pathlib import Path
+data = tomllib.loads(Path("manifest.toml").read_text(encoding="utf-8"))
+print(data.get("version", "").strip())
+PY
+)"
+          if [ -z "$MANIFEST_VERSION" ]; then
+            echo "manifest version is missing"
+            exit 1
+          fi
+          if [ "$TAG_VERSION" != "$MANIFEST_VERSION" ]; then
+            echo "tag version ($TAG_VERSION) does not match manifest version ($MANIFEST_VERSION)"
+            exit 1
+          fi
       - name: Validate pack files
         run: python3 scripts/validate_pack.py
       - name: Sign manifest in CI (keyless)

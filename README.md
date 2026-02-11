@@ -13,9 +13,21 @@ Official Homebrew cleanup rulepack for Preen.
 python3 scripts/validate_pack.py
 ```
 
+## Bump Version
+
+```bash
+python3 scripts/bump_version.py 1.0.3
+```
+
+Optional (auto-commit manifest version bump):
+
+```bash
+python3 scripts/bump_version.py 1.0.3 --commit
+```
+
 ## Publish Checklist
 
-1. bump `version` in `manifest.toml`
+1. Bump version (manual or with `scripts/bump_version.py`).
 2. Run the `sign-manifest` workflow to generate and commit `manifest.sig` and `manifest.cert` with keyless Sigstore.
 3. commit and tag (`vX.Y.Z`)
 4. push tag
@@ -28,3 +40,4 @@ Note:
 - `manifest.sig` and `manifest.cert` must exist in the repo/tag for git-install verification.
 - `signing.identity` must match the `sign-manifest` workflow identity.
 - The release workflow also publishes additional CI signature artifacts (`manifest.ci.sig`, `manifest.ci.pem`).
+- Release fails if tag version does not match `manifest.toml` version.
