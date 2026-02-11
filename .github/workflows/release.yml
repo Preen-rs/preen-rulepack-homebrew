@@ -35,5 +35,6 @@ jobs:
           files: |
             manifest.toml
             manifest.sig
+            manifest.cert
             manifest.ci.sig
             manifest.ci.pem

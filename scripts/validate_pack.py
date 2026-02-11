@@ -32,10 +32,13 @@ def non_empty_string(data: dict, key: str, path: pathlib.Path) -> str:
 def main() -> None:
     manifest_path = ROOT / "manifest.toml"
     signature_path = ROOT / "manifest.sig"
+    certificate_path = ROOT / "manifest.cert"
     if not manifest_path.exists():
         fail("manifest.toml is missing")
     if not signature_path.exists():
         fail("manifest.sig is missing")
+    if not certificate_path.exists():
+        fail("manifest.cert is missing")
 
     manifest = parse_toml(manifest_path)
     if manifest.get("schema_version") != 1:
@@ -77,6 +80,9 @@ def main() -> None:
     sig_content = signature_path.read_text(encoding="utf-8").strip()
     if not sig_content:
         fail("manifest.sig is empty")
+    cert_content = certificate_path.read_text(encoding="utf-8").strip()
+    if not cert_content:
+        fail("manifest.cert is empty")
 
     print("rulepack validation passed")
 
