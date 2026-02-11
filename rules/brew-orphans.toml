@@ -1,0 +1,25 @@
+schema_version = 1
+id = "brew-orphans"
+name = "Homebrew Orphans"
+category = "TemporaryFiles"
+risk = "Medium"
+enabled = true
+
+[match]
+mode = "Command"
+paths = []
+strategy = "Shallow"
+command = ["brew", "autoremove", "--dry-run"]
+parser = "brew_autoremove"
+
+[action]
+action_type = "RunCommand"
+paths = []
+command = ["brew", "autoremove"]
+mode = "Confirm"
+timeout_sec = 120
+allow_globs = false
+max_items = 1000
+package_manager = "homebrew"
+project_types = []
+params = {}

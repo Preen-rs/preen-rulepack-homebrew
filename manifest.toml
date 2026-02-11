@@ -1,0 +1,27 @@
+schema_version = 1
+pack_id = "preen-rs.homebrew"
+name = "Homebrew Cleanup"
+version = "1.0.0"
+description = "Clean Homebrew caches and remove orphaned dependencies"
+author = "Preen Team"
+license = "MIT"
+homepage = "https://github.com/Preen-rs/preen-rulepack-homebrew"
+core_compat = ">=0.1.0,<2.0.0"
+action_api = 1
+os_targets = ["Macos"]
+capabilities = ["FsRead", "FsTrash", "RunCommand"]
+
+[signing]
+sigstore = true
+issuer = "https://token.actions.githubusercontent.com"
+identity = "https://github.com/Preen-rs/preen-rulepack-homebrew/.github/workflows/sign-manifest.yml@refs/heads/main"
+
+[[rules]]
+id = "brew-cache"
+name = "Homebrew Cache"
+rule_file = "rules/brew-cache.toml"
+
+[[rules]]
+id = "brew-orphans"
+name = "Homebrew Orphans"
+rule_file = "rules/brew-orphans.toml"

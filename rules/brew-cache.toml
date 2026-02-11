@@ -1,0 +1,25 @@
+schema_version = 1
+id = "brew-cache"
+name = "Homebrew Cache"
+category = "Cache"
+risk = "Low"
+enabled = true
+
+[match]
+mode = "Paths"
+paths = ["~/Library/Caches/Homebrew", "/Library/Caches/Homebrew"]
+strategy = "Recursive"
+command = []
+parser = ""
+
+[action]
+action_type = "TrashPaths"
+paths = ["~/Library/Caches/Homebrew", "/Library/Caches/Homebrew"]
+command = []
+mode = "Confirm"
+timeout_sec = 30
+allow_globs = false
+max_items = 50000
+package_manager = ""
+project_types = []
+params = {}
