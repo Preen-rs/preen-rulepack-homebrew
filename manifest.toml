@@ -1,7 +1,7 @@
 schema_version = 1
 pack_id = "preen-rs.homebrew"
 name = "Homebrew Cleanup"
-version = "1.0.5"
+version = "1.0.7"
 description = "Clean Homebrew caches and remove orphaned dependencies"
 author = "Preen Team"
 license = "MIT"
@@ -14,7 +14,7 @@ capabilities = ["FsRead", "FsTrash", "RunCommand"]
 [signing]
 sigstore = true
 issuer = "https://token.actions.githubusercontent.com"
-identity = "https://github.com/Preen-rs/preen-rulepack-homebrew/.github/workflows/sign-manifest.yml@refs/heads/main"
+identity = "https://github.com/Preen-rs/preen-rulepack-homebrew/.github/workflows/release-manual.yml@refs/heads/main"
 
 [[rules]]
 id = "brew-cache"
