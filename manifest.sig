@@ -1,1 +1,1 @@
-sigstore-signature-placeholder-not-valid
+MEUCIQCSyibnaq8lQvaLd40IShNOD3lLLRupLhln+ULvKhA0pwIgYLZxifxMWIyDn5YAfcw5Vq+MyPJuUlDm5LwA4uos6QY=
