@@ -1,7 +1,7 @@
 schema_version = 1
 pack_id = "preen-rs.homebrew"
 name = "Homebrew Cleanup"
-version = "1.0.3"
+version = "1.0.4"
 description = "Clean Homebrew caches and remove orphaned dependencies"
 author = "Preen Team"
 license = "MIT"
