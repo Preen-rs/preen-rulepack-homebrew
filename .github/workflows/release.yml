@@ -20,13 +20,7 @@ jobs:
       - name: Ensure tag matches manifest version
         run: |
           TAG_VERSION="${GITHUB_REF_NAME#v}"
-          MANIFEST_VERSION="$(python3 - <<'PY'
-import tomllib
-from pathlib import Path
-data = tomllib.loads(Path("manifest.toml").read_text(encoding="utf-8"))
-print(data.get("version", "").strip())
-PY
-)"
+          MANIFEST_VERSION="$(python3 -c 'import tomllib, pathlib; data = tomllib.loads(pathlib.Path("manifest.toml").read_text(encoding="utf-8")); print(data.get("version", "").strip())')"
           if [ -z "$MANIFEST_VERSION" ]; then
             echo "manifest version is missing"
             exit 1
