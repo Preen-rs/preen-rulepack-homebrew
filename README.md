@@ -27,19 +27,18 @@ python3 scripts/bump_version.py 1.0.3 --commit
 
 ## Publish Checklist
 
-1. Bump version (manual or with `scripts/bump_version.py`).
-2. Run the `sign-manifest` workflow to generate and commit `manifest.sig` and `manifest.cert` with keyless Sigstore.
-3. commit and tag (`vX.Y.Z`)
-4. push tag
-5. Verify from Preen CLI:
+Recommended (one-click):
+1. Run `Release Rulepack (Manual)` workflow and pass `version` (example: `1.0.6`).
+2. Wait for workflow success (it bumps manifest version, signs, commits, tags, and creates release).
+3. Verify from Preen CLI:
    - `preen plugin preflight <git-url>@<tag>`
    - `preen plugin test <git-url>@<tag>`
    - `preen plugin install <git-url>@<tag>`
 
-Important order:
-- Always bump `manifest.toml` version first.
-- Then run `sign-manifest` (it signs the current manifest content).
-- Tag only after the signature commit lands on `main`.
+Fallback (manual steps):
+1. Bump version (manual or with `scripts/bump_version.py`).
+2. Run the `sign-manifest` workflow to generate and commit `manifest.sig` and `manifest.cert`.
+3. Commit and tag (`vX.Y.Z`), then push tag.
 
 Note:
 - `manifest.sig` and `manifest.cert` must exist in the repo/tag for git-install verification.
