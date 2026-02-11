@@ -1,4 +1,4 @@
-name: Release Rulepack
+name: Release Rulepack (Tag)
 
 on:
   push:
