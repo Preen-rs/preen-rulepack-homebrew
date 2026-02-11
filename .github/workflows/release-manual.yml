@@ -1,10 +1,10 @@
-name: Release Rulepack (Manual)
+name: Release Rulepack
 
 on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Release version without v prefix (example: 1.0.6)"
+        description: "Release version without v prefix (x.x.x)"
         required: true
         type: string
 
@@ -41,9 +41,7 @@ jobs:
             echo "tag already exists on origin: $TAG"
             exit 1
           fi
-      - name: Update manifest version
-        run: python3 scripts/bump_version.py "$VERSION"
-      - name: Set signing identity for manual release workflow
+      - name: Update manifest version and signing identity
         run: |
           python3 - <<'PY'
           import os
@@ -60,10 +58,14 @@ jobs:
               f"https://github.com/{repo}"
               "/.github/workflows/release-manual.yml@refs/heads/main"
           )
+          data["version"] = os.environ["VERSION"]
           lines = manifest_path.read_text(encoding="utf-8").splitlines()
           out = []
           in_signing = False
           for line in lines:
+              if line.startswith("version = "):
+                  out.append(f'version = "{data["version"]}"')
+                  continue
               if line.strip() == "[signing]":
                   in_signing = True
                   out.append(line)
