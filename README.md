@@ -36,6 +36,11 @@ python3 scripts/bump_version.py 1.0.3 --commit
    - `preen plugin test <git-url>@<tag>`
    - `preen plugin install <git-url>@<tag>`
 
+Important order:
+- Always bump `manifest.toml` version first.
+- Then run `sign-manifest` (it signs the current manifest content).
+- Tag only after the signature commit lands on `main`.
+
 Note:
 - `manifest.sig` and `manifest.cert` must exist in the repo/tag for git-install verification.
 - `signing.identity` must match the `sign-manifest` workflow identity.
